@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NutriPlan Lite</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <p class="badge">SIT707 7.2HD CI/CD Demo</p>
+      <h1>NutriPlan Lite</h1>
+      <p class="subtitle">A lightweight meal planning web app designed for automated testing, Docker builds, and Google Cloud Run deployment.</p>
+    </section>
+
+    <section class="card">
+      <h2>Create a Meal Plan</h2>
+      <form id="mealForm">
+        <div class="grid">
+          <label>Age<input name="age" type="number" value="25" min="1" required /></label>
+          <label>Weight (kg)<input name="weightKg" type="number" value="65" min="1" required /></label>
+          <label>Height (cm)<input name="heightCm" type="number" value="165" min="1" required /></label>
+          <label>Gender
+            <select name="gender">
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+            </select>
+          </label>
+          <label>Activity Level
+            <select name="activityLevel">
+              <option value="low">Low</option>
+              <option value="moderate" selected>Moderate</option>
+              <option value="high">High</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit">Generate Plan</button>
+      </form>
+    </section>
+
+    <section class="card result" id="resultBox">
+      <h2>Result</h2>
+      <p>Submit the form to generate your plan.</p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('mealForm');
+    const resultBox = document.getElementById('resultBox');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      const response = await fetch('/api/meal-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        resultBox.innerHTML = `<h2>Error</h2><p>${result.error}</p>`;
+        return;
+      }
+
+      resultBox.innerHTML = `
+        <h2>Your Meal Plan</h2>
+        <p><strong>Estimated calories:</strong> ${result.calories}</p>
+        <p><strong>Category:</strong> ${result.category}</p>
+        <ul>
+          <li><strong>Breakfast:</strong> ${result.meals.breakfast}</li>
+          <li><strong>Lunch:</strong> ${result.meals.lunch}</li>
+          <li><strong>Dinner:</strong> ${result.meals.dinner}</li>
+          <li><strong>Snack:</strong> ${result.meals.snack}</li>
+        </ul>
+      `;
+    });
+  </script>
+</body>
+</html>
