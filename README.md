@@ -53,4 +53,4 @@ to:
 expect(getCalorieCategory(2100)).toBe('light');
 ```
 
-Push the change. Cloud Build should fail. Then fix it back and push again to demonstrate successful CI/CD.
+Push the change. Cloud Build should fail and then fix it back and push again to demonstrate successful CI/CD.
