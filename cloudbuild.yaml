@@ -12,7 +12,7 @@ steps:
       [
         'build',
         '-t',
-        'gcr.io/$PROJECT_ID/nutriplan-lite:$COMMIT_SHA',
+        'australia-southeast1-docker.pkg.dev/$PROJECT_ID/nutriplan-repo/nutriplan-lite:$COMMIT_SHA',
         '.'
       ]
 
@@ -20,7 +20,7 @@ steps:
     args:
       [
         'push',
-        'gcr.io/$PROJECT_ID/nutriplan-lite:$COMMIT_SHA'
+        'australia-southeast1-docker.pkg.dev/$PROJECT_ID/nutriplan-repo/nutriplan-lite:$COMMIT_SHA'
       ]
 
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -30,7 +30,7 @@ steps:
         'deploy',
         'nutriplan-lite',
         '--image',
-        'gcr.io/$PROJECT_ID/nutriplan-lite:$COMMIT_SHA',
+        'australia-southeast1-docker.pkg.dev/$PROJECT_ID/nutriplan-repo/nutriplan-lite:$COMMIT_SHA',
         '--region',
         'australia-southeast1',
         '--platform',
@@ -39,7 +39,7 @@ steps:
       ]
 
 images:
-  - 'gcr.io/$PROJECT_ID/nutriplan-lite:$COMMIT_SHA'
+  - 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/nutriplan-repo/nutriplan-lite:$COMMIT_SHA'
 
 options:
   logging: CLOUD_LOGGING_ONLY
